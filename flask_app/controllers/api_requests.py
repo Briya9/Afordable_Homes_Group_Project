@@ -4,7 +4,7 @@ from flask_app.controllers.rand_zips import get_random_zip
 
 
 headers = {
-        'X-RapidAPI-Key': "119aab99ecmsh1807def65680d70p14a4aajsn91d6ccee1503",
+        'X-RapidAPI-Key': "",
         'X-RapidAPI-Host': "realty-in-us.p.rapidapi.com"
     }
 conn = http.client.HTTPSConnection("realty-in-us.p.rapidapi.com")
