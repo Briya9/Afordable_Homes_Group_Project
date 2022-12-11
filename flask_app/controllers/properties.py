@@ -32,7 +32,7 @@ def user_parameters():
     }
     user.User.update_user(user_input)
     prop_data = property.Property.get_listings_by_max_price(home_data_input)
-    print("***PROP DATA*** : ", prop_data)
+#     print("***PROP DATA*** : ", prop_data)
     for each in prop_data:
         addr_data = {
             "street_address": each['address_new']['line'],
