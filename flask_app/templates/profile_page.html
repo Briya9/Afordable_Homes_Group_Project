@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename=('/css/style.css')) }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Practice Results</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container row">
+            <div class="col-8">
+                <h1>Affordable Homes</h1>
+                <a href="/results" class="btn btn-outline-secondary">Back to Results!</a>
+            </div>
+
+
+            <div class="col">
+                <div class="container">
+                    <h2>Welcome, {{session['first_name']}}</h2>
+                    <a href="/affordablehomes/home" class="btn btn-outline-secondary">Home</a>
+                    <a href="/logout" class="btn btn-outline-secondary">Log Out</a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row header-row">
+                <h1>Your Saved Properties</h1>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                    <th>Img</th>
+                    <th>address</th>
+                    <th>price</th>
+                    <th>Type</th>
+                    <th>Beds</th>
+                    <th>Baths</th>
+                    <th>Size</th>
+                </thead>
+                <tbody>
+                    {%for fav in favorites%}
+                    <tr>
+                        <td><a href="{{fav['web']}}"><img src="{{fav['photo']}}" alt="Property Image"
+                                    style="width:70%;"></a></td>
+                        <td>{{fav['street_address']}}, {{fav['city']}}, {{fav['state']}}
+                            {{fav['zip_code']}}</td>
+                        <td>{{"${:0,.0f}".format(fav['price'])}}</td>
+                        <td>{{fav['type']}}</td>
+                        <td>{{fav['beds']}}</td>
+                        <td>{{fav['baths']}}</td>
+                        <td>{{fav['size']}} sqft.</td>
+                        <td>
+                            {%if fav['favorite'] == 1 %}
+                            Already Saved
+                            {% else %}
+                            <a href="/remove_fav/{{fav['id']}}"><button value="">
+                                    Remove</button></a>
+                            {%endif%}
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+</body>
+
+</html>
