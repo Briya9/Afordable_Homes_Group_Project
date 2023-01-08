@@ -38,9 +38,10 @@
         <br>
         <br>
 
-        <h5 class="box-around">Here you can search for homes that fall within your monthly budget.  Just fill in some information below and we will send you results that we think you might qulify to purchase.</h5>
+        <h5 class="box-around">Here you can search for homes that fall within your monthly budget.  Just fill in some information below and <br>we will send you results 
+            that we think you might qulify to purchase.</h5>
         <div class="col">
-            <div class="row">
+            <div class="row-1">
                 <form action="/affordablehomes/estimate/results" method="POST">
                     {% with messages = get_flashed_messages(category_filter=["register"]) %}
                     {% if messages %}
@@ -84,7 +85,9 @@
         <br>
         <div class="box-around">
             <h4>Please Read:</h4>
-            <p>*** All results are estimates only and in no way guarantee any kind of approval.  Please consult with a licensed <a href="https://www.loandepot.com/">Mortgage Loan professional</a>  or <a href="https://www.realtor.com/realestateagents/">Real Estate professional</a> to discuss your options.</p>
+            <p>*** All results are estimates only and in no way guarantee any kind of approval.  Please consult with a licensed 
+                <a href="https://www.loandepot.com/">Mortgage Loan professional</a>  or  </a><a href="https://www.realtor.com/realestateagents/">Real Estate Proessional </a>
+                Real Estate professional</a> to discuss your options.</p>
             <p>*** Results are for primary residence properties only based on conventional loan guidelines.</p>
 
         </div>
