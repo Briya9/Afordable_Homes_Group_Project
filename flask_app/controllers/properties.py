@@ -1,7 +1,8 @@
 from flask_app import app
 from flask_app.models import user, property
+# from flask_app.controllers.mtg_rates import avg_rate
 from flask_app.controllers.mtg_rates import avg_rate
-from flask_app.controllers import api_requests
+from flask_app.controllers import mtg_rates
 from flask import render_template, redirect, session, request
 
 
@@ -32,7 +33,6 @@ def user_parameters():
     }
     user.User.update_user(user_input)
     prop_data = property.Property.get_listings_by_max_price(home_data_input)
-#     print("***PROP DATA*** : ", prop_data)
     for each in prop_data:
         addr_data = {
             "street_address": each['address_new']['line'],
@@ -69,14 +69,13 @@ def user_parameters():
 def show_all_results():
     parameters = {
         "avg_rate" :(((avg_rate)*100)+1),
-        "max_price" : session['p_max_price'],
-        "max_monthly" :int(session['p_max_monthly']),
-        "radius" : session['p_radius'],
-        "city" : session['p_frmtd_city'],
-        "state" : session['p_state']
+        "max_price" : session["p_max_price"],
+        "max_monthly" :int(session["p_max_monthly"]),
+        "radius" : session["p_radius"],
+        "city" : session["p_frmtd_city"],
+        "state" : session["p_state"]
     }
-    addresses = property.Property.get_all_properties()
-    return render_template('results_page.html', addresses = addresses, parameters = parameters)
+    return render_template('results_page.html', addresses = property.Property.get_all_properties(), parameters = parameters) 
 
 @app.route('/save/<int:id>')
 def save_prop(id):
@@ -95,6 +94,5 @@ def remove_fav(id):
 
 @app.route('/affordablehomes/home')
 def home_page():
-    featured_homes = api_requests.get_featured_homes()
-    # print ("***************FEATURED HOMES ****************", featured_homes)
+    featured_homes = mtg_rates.get_featured_homes()
     return render_template('dashboard_homes.html', featured_homes = featured_homes)
