@@ -36,7 +36,6 @@ def register_user():
 
 
 
-
 @app.route('/logged_in', methods=['POST'])
 def logged_in_user():
     user_login_data = {
@@ -52,8 +51,10 @@ def logged_in_user():
 
 @app.route('/affordablehomes/profile/<int:id>')
 def profile_page(id):
-    favorites = user.User.get_favorited_by_user(id)
-    return render_template('profile_page.html', favorites = favorites)
+    data = {
+        "id" :id
+    }
+    return render_template('profile_page.html', favorites = user.User.get_favorited_by_user(data))
 
 @app.route('/affordablehomes/condo')
 def condo_page():
@@ -62,5 +63,8 @@ def condo_page():
 
 @app.route('/affordablehomes/estimate')
 def estimate_page():
-    user_info = user.User.get_user_by_id(session['id'])
-    return render_template('estimate_page.html', user_info = user_info)
+    data = {
+        "id" :session["id"]
+    }
+    return render_template('estimate_page.html',user_info = user.User.get_user_by_id(data))
+    
