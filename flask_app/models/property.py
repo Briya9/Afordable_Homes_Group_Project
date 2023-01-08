@@ -1,9 +1,10 @@
 from flask_app import app
 from flask_app.config.mysqlconnectin import connectToMySQL
-from flask_app.controllers import api_requests
+from flask_app.controllers import mtg_rates
 from flask import flash
 import http.client
 import json
+import requests
 
 
 class Property:
@@ -42,7 +43,9 @@ class Property:
 
     @classmethod
     def add_to_properties_list(cls, prop_data):
-        query = "INSERT INTO properties (street_address, city, state, zip_code, type, size, price, photo, web, beds, baths, created_at, updated_at, buyer_id) VALUES (%(street_address)s, %(city)s, %(state)s, %(zip_code)s, %(type)s, %(size)s, %(price)s, %(photo)s, %(web)s, %(beds)s, %(baths)s, NOW(), NOW(), %(buyer_id)s);"
+        query = """INSERT INTO properties (street_address, city, state, zip_code, type, size, price, photo, web, beds, baths, buyer_id) 
+        VALUES (%(street_address)s, %(city)s, %(state)s, %(zip_code)s, %(type)s, %(size)s, %(price)s, %(photo)s, %(web)s, %(beds)s, %(baths)s,  %(buyer_id)s);
+        """
         return connectToMySQL(cls.db).query_db(query, prop_data)
 
     @classmethod
@@ -66,20 +69,20 @@ class Property:
         }
         query = """
             UPDATE properties
-            SET favorite = 0
-            WHERE id = %(id)s
+            SET favorite = 0.0
+            WHERE id = %(id)s;
         """
-        return connectToMySQL(cls.db).query_db(query, data)
+        return connectToMySQL(cls.db).query_db(query, data) 
 
     @staticmethod
     def get_listings_by_max_price(home_data_input):
         Property.delete_prev_results()
         conn = http.client.HTTPSConnection("realty-in-us.p.rapidapi.com")
 
-        headers = api_requests.headers
+        headers = mtg_rates.headers
         
         conn.request("GET", "/properties/list-for-sale?state_code=" + str(home_data_input['state']) + "&city=" + str(
-            home_data_input['city']) + "&offset=0&limit=25&sort=relevance&radius=" + str(home_data_input['radius']) + "&price_max=" + str(home_data_input['max_price']) + "", headers=headers)
+            home_data_input['city']) + "&offset=0&limit=24&sort=relevance&radius=" + str(home_data_input['radius']) + "&price_max=" + str(home_data_input['max_price']) + "", headers=headers)
 
         res = conn.getresponse()
         data = res.read()
