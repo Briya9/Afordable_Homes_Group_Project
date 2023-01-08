@@ -133,4 +133,4 @@ class User:
         if (max_loan > (0.95*(max_price))):
             max_price = int((dn_pmt * 20))
         return max_price
-        # print("${:0,.0f}".format(max_price))
+   
