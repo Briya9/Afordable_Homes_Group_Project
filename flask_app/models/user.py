@@ -32,7 +32,7 @@ class User:
 
     @classmethod
     def create_user(cls, data):
-        query = "INSERT INTO users (first_name, last_name, email, password, created_at, updated_at) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(), NOW() );"
+        query = "INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
         return connectToMySQL(cls.db).query_db(query, data)
 
     @classmethod
@@ -54,10 +54,7 @@ class User:
             return result[0]
 
     @classmethod
-    def get_user_by_id(cls, id):
-        data={
-            "id":id
-        }
+    def get_user_by_id(cls, data):
         query = "SELECT * FROM users WHERE id = %(id)s;"
         result = connectToMySQL(cls.db).query_db(query, data)
         if result == ():
@@ -66,15 +63,12 @@ class User:
             return result[0]
 
     @classmethod
-    def get_favorited_by_user(cls,id):
-        data={
-            "id": id
-        }
+    def get_favorited_by_user(cls,data):
         query = """
             SELECT * FROM properties
             LEFT JOIN users
             ON favorite = 1
-            WHERE users.id = %(id)s
+            WHERE users.id = %(id)s;
         """
         results =  connectToMySQL(cls.db).query_db(query, data)
         return results
@@ -84,7 +78,7 @@ class User:
         query ="""
             UPDATE users
             SET score = %(score)s, down_payment = %(down_payment)s, monthly_max = %(P)s, city=%(city)s, state = %(state)s, radius = %(radius)s
-            WHERE id = %(id)s
+            WHERE id = %(id)s;
         """
         return connectToMySQL(cls.db).query_db(query, user_input)
 
@@ -98,13 +92,13 @@ class User:
             flash("Last name must be 3 or more character", "register")
             is_valid = False
         if not EMAIL_REGEX.match(form_data["email"]): 
-            flash("Invalid email address!")
+            flash("Invalid email address!", "register")
             is_valid = False
         data = {
             "email" : form_data["email"]
         }
         query = "SELECT * FROM users WHERE email = %(email)s ;"
-        result = connectToMySQL("users_properties_schema").query_db(query, form_data)
+        result = connectToMySQL("users_properties_schema").query_db(query, data)
         if len(result) >= 1:
             flash("Email already taken","register")
             is_valid = False
